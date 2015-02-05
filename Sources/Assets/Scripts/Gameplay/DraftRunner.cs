@@ -5,23 +5,13 @@ public class DraftRunner : MonoBehaviour
 {
     public BezierCurve _Draft;
     public float _speed;
-    //public float _TestValue = 0f;
+    public float _distanceTraveled = 0f;
 
-    private float m_startTime;
-
-    public float TimePassed
-    {
-        get { return Time.time - m_startTime; }
-    }
-
-	void Start ()
-	{
-        m_startTime = Time.time;
-	}
 	
 	void Update ()
-	{
-        transform.position =  _Draft.GetPosiion(TimePassed * _speed);
+    {
+        _distanceTraveled += Time.deltaTime * _speed;
+        transform.position =  _Draft.GetPosiion(_distanceTraveled);
 	}
 
     //void OnValidate()
