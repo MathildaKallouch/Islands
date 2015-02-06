@@ -16,10 +16,10 @@ public class BezierCurve : MonoBehaviour
 
         if (realPercent < 0) { realPercent = 1 - Mathf.Abs(realPercent); }
 
-        int currP = (int)(realPercent/step);
-        realPercent = (realPercent -(step * currP)) / step;
-
+        int currP = (int)(realPercent / step);
         currP -= _loop ? _points.Length * (int)(currP / _points.Length) : (_points.Length - 1) * (int)(currP / (_points.Length - 1));
+
+        realPercent = (realPercent -(step * currP)) / step;
 
         if (currP < _points.Length - 1)
         {
