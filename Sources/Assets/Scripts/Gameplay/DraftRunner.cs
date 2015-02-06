@@ -3,21 +3,34 @@ using System.Collections;
 
 public class DraftRunner : MonoBehaviour
 {
-    public BezierCurve _Draft;
-    public float _speed;
-    public float _distanceTraveled = 0f;
+    public BezierCurve _draft;
 
-	
-	void Update ()
+    private float m_speed;
+    private float m_distanceTraveled = 0f;
+
+    public BezierCurve Draft
     {
-        _distanceTraveled += Time.deltaTime * _speed;
-        transform.position =  _Draft.GetPosiion(_distanceTraveled);
+        get { return _draft; }
+        set 
+        { 
+            _draft = value;
+            m_speed = _draft._curveSpeed;
+        }
+    }
+
+    public virtual void Start()
+    {
+        m_speed = _draft._curveSpeed;
+    }
+	
+	public virtual void Update ()
+    {
+        m_distanceTraveled += Time.deltaTime * m_speed;
+        transform.position =  _draft.GetPosiion(m_distanceTraveled);
 	}
 
-    //void OnValidate()
-    //{
-    //    Vector3 pos = _Draft.GetPosiion(_TestValue);
+    public virtual void Ability()
+    {
+    }
 
-    //    transform.position = pos;
-    //}
 }

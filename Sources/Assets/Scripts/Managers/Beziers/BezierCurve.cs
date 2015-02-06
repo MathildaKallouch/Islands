@@ -6,30 +6,20 @@ public class BezierCurve : MonoBehaviour
 {
     public BezierPoint[] _points;
     public bool _displayPoints = true;
-    public bool m_loop = true;
+    public bool _loop = true;
+    public float _curveSpeed;
 
     public Vector3 GetPosiion(float percent)
     {
         float realPercent = percent - (int)percent;
-        float step = m_loop ? (float)(1f / _points.Length) : (float)(1f / (_points.Length - 1));
-        int currP = 0;
+        float step = _loop ? (float)(1f / _points.Length) : (float)(1f / (_points.Length - 1));
 
-        while (realPercent >= 0)
-        {
-            realPercent -= step;
-            if (realPercent >= 0)
-            {
-                currP += 1;
-            }
-        }
-        realPercent += step;
-        realPercent /= step;
+        if (realPercent < 0) { realPercent = 1 - Mathf.Abs(realPercent); }
 
-        while (currP >= 0)
-        {
-            currP -= m_loop ? _points.Length : _points.Length - 1;
-        }
-        currP += m_loop ? _points.Length : _points.Length - 1;
+        int currP = (int)(realPercent/step);
+        realPercent = (realPercent -(step * currP)) / step;
+
+        currP -= _loop ? _points.Length * (int)(currP / _points.Length) : (_points.Length - 1) * (int)(currP / (_points.Length - 1));
 
         if (currP < _points.Length - 1)
         {
@@ -68,7 +58,7 @@ public class BezierCurve : MonoBehaviour
                     Gizmos.DrawLine(lastPos, currentPos);
                     lastPos = currentPos;
                 }
-                else if(m_loop)
+                else if(_loop)
                 {
                     currentPos = Bezier.CubicBezier(_points[i].transform.position, _points[i]._frontBracket.position, _points[0]._backBracket.position, _points[0].transform.position, (j / 100f));
 
