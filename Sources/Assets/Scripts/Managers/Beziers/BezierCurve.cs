@@ -8,6 +8,10 @@ public class BezierCurve : MonoBehaviour
     public bool _displayPoints = true;
     public bool _loop = true;
     public float _curveSpeed;
+    public float _lineWidth;
+    public Color _color;
+
+    private LineRenderer m_lineRenderer;
 
     public Vector3 GetPosiion(float percent)
     {
@@ -31,20 +35,27 @@ public class BezierCurve : MonoBehaviour
         }
     }
 
-    public virtual void OnDrawGizmos()
+    void Start()
     {
+        m_lineRenderer = new GameObject("Line ").AddComponent<LineRenderer>();
+        m_lineRenderer.transform.parent = transform;
+    }
 
-        if(_points.Length < 2)
+    void Update()
+    {
+        if (_points.Length < 2)
         {
             return;
         }
 
+        //m_lineRenderer.SetColors(Color.grey, Color.red);
+        m_lineRenderer.SetVertexCount(100 * _points.Length);
+        m_lineRenderer.SetWidth(_lineWidth, _lineWidth);
+        m_lineRenderer.SetColors(Color.grey, Color.red);
+
         for (int i = 0; i < _points.Length; i++)
         {
-
-            Gizmos.color = Color.green;
-
-            Vector3 lastPos,currentPos;
+            Vector3 lastPos, currentPos;
 
             lastPos = _points[i].transform.position;
 
@@ -53,12 +64,49 @@ public class BezierCurve : MonoBehaviour
 
                 if (i < _points.Length - 1)
                 {
-                    currentPos = Bezier.CubicBezier(_points[i].transform.position, _points[i]._frontBracket.position, _points[i+1]._backBracket.position, _points[i+1].transform.position, (j / 100f));
+                    currentPos = Bezier.CubicBezier(_points[i].transform.position, _points[i]._frontBracket.position, _points[i + 1]._backBracket.position, _points[i + 1].transform.position, (j / 100f));
+
+                    m_lineRenderer.SetPosition((i*100)+(j-1), currentPos);
+                }
+                else if (_loop)
+                {
+                    currentPos = Bezier.CubicBezier(_points[i].transform.position, _points[i]._frontBracket.position, _points[0]._backBracket.position, _points[0].transform.position, (j / 100f));
+
+                    m_lineRenderer.SetPosition((i * 100) + (j - 1), currentPos);
+                }
+
+            }
+        }
+    }
+
+    public virtual void OnDrawGizmos()
+    {
+
+        if (_points.Length < 2)
+        {
+            return;
+        }
+
+        for (int i = 0; i < _points.Length; i++)
+        {
+
+            Gizmos.color = _color;
+
+            Vector3 lastPos, currentPos;
+
+            lastPos = _points[i].transform.position;
+
+            for (int j = 1; j < 101; j++)
+            {
+
+                if (i < _points.Length - 1)
+                {
+                    currentPos = Bezier.CubicBezier(_points[i].transform.position, _points[i]._frontBracket.position, _points[i + 1]._backBracket.position, _points[i + 1].transform.position, (j / 100f));
 
                     Gizmos.DrawLine(lastPos, currentPos);
                     lastPos = currentPos;
                 }
-                else if(_loop)
+                else if (_loop)
                 {
                     currentPos = Bezier.CubicBezier(_points[i].transform.position, _points[i]._frontBracket.position, _points[0]._backBracket.position, _points[0].transform.position, (j / 100f));
 
@@ -68,7 +116,7 @@ public class BezierCurve : MonoBehaviour
 
             }
 
-            if(_displayPoints)
+            if (_displayPoints)
             {
                 _points[i].DisplayPoint();
             }
