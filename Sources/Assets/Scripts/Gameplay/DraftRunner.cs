@@ -8,26 +8,22 @@ public class DraftRunner : MonoBehaviour
     private float m_speed;
     private float m_distanceTraveled = 0f;
 
-    public BezierCurve Draft
+    public float DistanceTraveled
     {
-        get { return _draft; }
-        set 
-        { 
-            _draft = value;
-            m_speed = _draft._curveSpeed;
-        }
+        get { return m_distanceTraveled; }
+        set { m_distanceTraveled = value; }
+    }
+
+    public float Speed
+    {
+        get { return m_speed; }
+        set { m_speed = value; }
     }
 
     public virtual void Start()
     {
-        m_speed = _draft._curveSpeed;
+        _draft.Register(this);
     }
-	
-	public virtual void Update ()
-    {
-        m_distanceTraveled += Time.deltaTime * m_speed;
-        transform.position =  _draft.GetPosiion(m_distanceTraveled);
-	}
 
     public virtual void Ability()
     {

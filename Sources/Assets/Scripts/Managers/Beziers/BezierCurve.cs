@@ -9,6 +9,23 @@ public class BezierCurve : MonoBehaviour
     public bool _loop = true;
     public float _curveSpeed;
 
+    private List<DraftRunner> m_runners;
+
+    void Awake()
+    {
+        m_runners = new List<DraftRunner>();
+    }
+
+    void FixedUpdate()
+    {
+        for (int i = 0; i < m_runners.Count; i++)
+        {
+
+            m_runners[i].DistanceTraveled += Time.deltaTime * _curveSpeed;
+            m_runners[i].transform.position = GetPosiion(m_runners[i].DistanceTraveled);
+        }
+    }
+
     public Vector3 GetPosiion(float percent)
     {
         float realPercent = percent - (int)percent;
@@ -29,6 +46,38 @@ public class BezierCurve : MonoBehaviour
         {
             return Bezier.CubicBezier(_points[currP].transform.position, _points[currP]._frontBracket.position, _points[0]._backBracket.position, _points[0].transform.position, realPercent);
         }
+    }
+
+    public Vector3 GetConstantSpeed(float percent)
+    {
+        float realPercent = percent - (int)percent;
+        float step = _loop ? (float)(1f / _points.Length) : (float)(1f / (_points.Length - 1));
+
+        if (realPercent < 0) { realPercent = 1 - Mathf.Abs(realPercent); }
+
+        int currP = (int)(realPercent / step);
+        currP -= _loop ? _points.Length * (int)(currP / _points.Length) : (_points.Length - 1) * (int)(currP / (_points.Length - 1));
+
+        realPercent = (realPercent - (step * currP)) / step;
+
+        if (currP < _points.Length - 1)
+        {
+            return Bezier.CubicBezierSpeed(_points[currP].transform.position, _points[currP]._frontBracket.position, _points[currP + 1]._backBracket.position, _points[currP + 1].transform.position, realPercent);
+        }
+        else
+        {
+            return Bezier.CubicBezierSpeed(_points[currP].transform.position, _points[currP]._frontBracket.position, _points[0]._backBracket.position, _points[0].transform.position, realPercent);
+        }
+    }
+
+    public void Register(DraftRunner dr)
+    {
+        if(dr == null)
+        {
+            return;
+        }
+
+        m_runners.Add(dr);
     }
 
     public virtual void OnDrawGizmos()
