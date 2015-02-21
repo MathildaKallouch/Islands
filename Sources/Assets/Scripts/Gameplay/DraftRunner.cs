@@ -50,6 +50,12 @@ public class DraftRunner : MonoBehaviour
 
     public virtual void SwitchCurve(bool next)
     {
+        if ((next && _draft._nextCurve == null) || (!next && _draft._previousCurve == null))
+        {
+            return;
+        }
+
+
         _draft.Unregister(this);
         m_start = _draft.GetPosition(m_distanceTraveled);
         _draft = next ? _draft._nextCurve : _draft._previousCurve;

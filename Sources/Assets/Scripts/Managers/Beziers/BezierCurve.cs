@@ -52,7 +52,7 @@ public class BezierCurve : MonoBehaviour
 
         for (int i = 0; i < _points.Length; i++)
         {            
-            for (int j = 0; j < 101; j++)
+            for (int j = 1; j < 101; j++)
             {
 
                 if (i < _points.Length - 1)
