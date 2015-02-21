@@ -5,11 +5,14 @@ using System.Collections.Generic;
 public class BezierCurve : MonoBehaviour
 {
     public BezierPoint[] _points;
+    public BezierCurve _nextCurve;
+    public BezierCurve _previousCurve;
     public bool _displayPoints = true;
     public bool _loop = true;
     public float _curveSpeed;
     public float _lineWidth;
     public Color _color;
+
 
 
     private LineRenderer m_lineRenderer;
@@ -28,8 +31,10 @@ public class BezierCurve : MonoBehaviour
         {
 
             m_runners[i].DistanceTraveled += Time.deltaTime * _curveSpeed;
-            m_runners[i].transform.position = GetPosiion(m_runners[i].DistanceTraveled);
+            m_runners[i].transform.position = GetPosition(m_runners[i].DistanceTraveled);
         }
+
+        UpdateLineRenderer();
     }
 
     public void UpdateLineRenderer()
@@ -47,7 +52,7 @@ public class BezierCurve : MonoBehaviour
 
         for (int i = 0; i < _points.Length; i++)
         {            
-            for (int j = 0; j < 101; j++)
+            for (int j = 1; j < 101; j++)
             {
 
                 if (i < _points.Length - 1)
@@ -64,7 +69,7 @@ public class BezierCurve : MonoBehaviour
         }
     }
 
-    public Vector3 GetPosiion(float percent)
+    public Vector3 GetPosition(float percent)
     {
         float realPercent = percent - (int)percent;
         float step = _loop ? (float)(1f / _points.Length) : (float)(1f / (_points.Length - 1));
@@ -94,6 +99,16 @@ public class BezierCurve : MonoBehaviour
         }
 
         m_runners.Add(dr);
+    }
+
+    public void Unregister(DraftRunner dr)
+    {
+        if (dr == null)
+        {
+            return;
+        }
+
+        m_runners.Remove(dr);
     }
 
     public virtual void OnDrawGizmos()
