@@ -46,7 +46,6 @@ public class BezierCurve : MonoBehaviour
             return;
         }
 
-        //m_lineRenderer.SetColors(_color, new Color(10, 10, 20));
 
         Vector3 currentPos = Vector3.zero;
 

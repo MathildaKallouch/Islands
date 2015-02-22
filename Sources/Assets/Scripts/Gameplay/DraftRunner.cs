@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
 public class DraftRunner : MonoBehaviour
 {
     public BezierCurve _draft;
     public float _switchLaneTime;
+    [Range(0,1)]
+    public float _startPosition;
 
     private float m_speed;
     private float m_distanceTraveled = 0f;
@@ -27,6 +30,7 @@ public class DraftRunner : MonoBehaviour
 
     public virtual void Start()
     {
+        m_distanceTraveled = _startPosition;
         _draft.Register(this);
         m_timer = new Timer();
         renderer.sortingOrder = 1;
