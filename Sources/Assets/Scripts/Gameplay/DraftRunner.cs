@@ -29,6 +29,7 @@ public class DraftRunner : MonoBehaviour
     {
         _draft.Register(this);
         m_timer = new Timer();
+        renderer.sortingOrder = 1;
     }
 
     public virtual void Update()

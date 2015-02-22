@@ -21,15 +21,17 @@ public class BezierCurve : MonoBehaviour
     void Awake()
     {
         m_runners = new List<DraftRunner>();
-        m_lineRenderer = new GameObject("Line").AddComponent<LineRenderer>();
-        m_lineRenderer.transform.parent = transform;
+        
+        m_lineRenderer = gameObject.GetComponent<LineRenderer>();
+        m_lineRenderer.SetVertexCount(_points.Length * 100);
+        m_lineRenderer.SetWidth(_lineWidth, _lineWidth);
+        m_lineRenderer.sortingOrder = 0;
     }
 
     void FixedUpdate()
     {
         for (int i = 0; i < m_runners.Count; i++)
         {
-
             m_runners[i].DistanceTraveled += Time.deltaTime * _curveSpeed;
             m_runners[i].transform.position = GetPosition(m_runners[i].DistanceTraveled);
         }
@@ -44,9 +46,7 @@ public class BezierCurve : MonoBehaviour
             return;
         }
 
-        m_lineRenderer.SetVertexCount(_points.Length * 100);
-        m_lineRenderer.SetWidth(_lineWidth, _lineWidth);
-        m_lineRenderer.SetColors(_color, _color);
+        //m_lineRenderer.SetColors(_color, new Color(10, 10, 20));
 
         Vector3 currentPos = Vector3.zero;
 
