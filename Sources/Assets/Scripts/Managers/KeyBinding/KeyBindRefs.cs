@@ -11,14 +11,14 @@ public static class KeyBindRefs
         get
         {
             var temp = new Dictionary<KeyConfig, List<string>>();
-            temp.Add(new KeyConfig(KeyCode.Alpha1), new List<string> { "Alpha1" });
-            temp.Add(new KeyConfig(KeyCode.Alpha2), new List<string> { "Alpha2" });
-            temp.Add(new KeyConfig(KeyCode.Alpha3), new List<string> { "Alpha3" });
-            temp.Add(new KeyConfig(KeyCode.Alpha4), new List<string> { "Alpha4" });
-            temp.Add(new KeyConfig(KeyCode.Alpha5), new List<string> { "Alpha5" });
-            temp.Add(new KeyConfig(KeyCode.Alpha6), new List<string> { "Alpha6" });
-            temp.Add(new KeyConfig(KeyCode.Alpha7), new List<string> { "Alpha7" });
-            temp.Add(new KeyConfig(KeyCode.Alpha8), new List<string> { "Alpha8" });
+            temp.Add(new KeyConfig(KeyCode.A), new List<string> { "Alpha1" });
+            temp.Add(new KeyConfig(KeyCode.Z), new List<string> { "Alpha2" });
+            temp.Add(new KeyConfig(KeyCode.E), new List<string> { "Alpha3" });
+            temp.Add(new KeyConfig(KeyCode.R), new List<string> { "Alpha4" });
+            temp.Add(new KeyConfig(KeyCode.T), new List<string> { "Alpha5" });
+            temp.Add(new KeyConfig(KeyCode.Y), new List<string> { "Alpha6" });
+            temp.Add(new KeyConfig(KeyCode.U), new List<string> { "Alpha7" });
+            temp.Add(new KeyConfig(KeyCode.I), new List<string> { "Alpha8" });
             temp.Add(new KeyConfig(KeyCode.Mouse0), new List<string> { "MouseLeftClick" });
             temp.Add(new KeyConfig(KeyCode.Tab), new List<string> { "KeyBindGUI" });
 

@@ -33,7 +33,7 @@ public class DraftRunner : MonoBehaviour
         m_distanceTraveled = _startPosition;
         _draft.Register(this);
         m_timer = new Timer();
-        renderer.sortingOrder = 1;
+        GetComponent<Renderer>().sortingOrder = 1;
     }
 
     public virtual void Update()
